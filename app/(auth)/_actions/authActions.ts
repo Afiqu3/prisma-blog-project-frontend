@@ -1,5 +1,8 @@
 "use server";
 
+import { cookies } from "next/headers";
+// import { redirect } from "next/navigation";
+
 type LoginState = {
   success: boolean;
   statusCode: number;
@@ -14,7 +17,7 @@ export const loginAction = async (
   prevState: LoginState,
   formData: FormData,
 ) => {
-//   console.log(prevState, "prev State");
+  //   console.log(prevState, "prev State");
   const email = formData.get("email");
   const password = formData.get("password");
 
@@ -32,5 +35,23 @@ export const loginAction = async (
   });
 
   const result = await res.json();
+
+  if (result.success) {
+    const cookieStore = await cookies();
+
+    cookieStore.set("accessToken", result.data.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24,
+      sameSite: "lax",
+    });
+
+    cookieStore.set("refreshToken", result.data.refreshToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7,
+      sameSite: "lax",
+    });
+
+    // redirect("/dashboard");
+  }
   return result;
 };

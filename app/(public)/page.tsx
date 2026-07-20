@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 
-const Home = () => {
+const HomePage = () => {
+
   return (
     <div>
       Hello, Next.js!
@@ -11,4 +12,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
