@@ -59,6 +59,7 @@ type NavbarProps = {
 
 export function Navbar({ user }: NavbarProps) {
   const router = useRouter();
+
   const handleUserMenuAction = async (action: string) => {
     if (action === "logout") {
       await logout();
@@ -92,7 +93,7 @@ export function Navbar({ user }: NavbarProps) {
           </div>
 
           {/* User Dropdown */}
-          {user.success ? (
+          {user?.success ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="cursor-pointer">
