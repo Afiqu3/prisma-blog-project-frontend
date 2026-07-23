@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { PricingSectionLoader } from "../_components/payment/PricingSectionLoader";
-// import { PricingSection } from "../_components/payment/PricingSection";
+import { PricingSection } from "../_components/payment/PricingSection";
 
 const PaymentPage = () => {
   return (
@@ -13,7 +13,7 @@ const PaymentPage = () => {
       </div>
 
       <Suspense fallback={<PricingSectionLoader />}>
-        {/* <PricingSection /> */}
+        <PricingSection />
       </Suspense>
     </div>
   );
