@@ -39,3 +39,25 @@ export type IPost = {
     createdAt: string;
     updatedAt: string;
 };
+
+export type LoginState = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    accessToken: string;
+    refreshToken: string;
+  };
+};
+
+export type RegistrationState = {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    name: string;
+    email: string;
+    password: string;
+    profilePhoto?: string;
+  };
+};
