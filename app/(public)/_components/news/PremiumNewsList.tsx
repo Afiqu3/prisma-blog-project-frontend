@@ -1,15 +1,15 @@
 import { IPost } from "@/lib/types";
 import { NewsCard } from "./NewsCard";
 import { getPremiumNews } from "../../_actions/getPremiumNews";
-// {
-//   searchParams,
-// }: {
-//   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
-// }
-export async function PremiumNewsList() {
-//   const query = await searchParams;
-  const result = await getPremiumNews();
-//   console.log(result)
+
+export async function PremiumNewsList({
+  searchParams,
+}: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const query = await searchParams;
+  const result = await getPremiumNews({ query });
+  //   console.log(result)
 
   if (!result.success || !result.data?.length) {
     return (
