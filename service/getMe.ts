@@ -1,14 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { isAccessTokenExist } from "./refreshToken";
 
 export const getMe = async () => {
-  const cookieStore = await cookies();
+  const accessToken = await isAccessTokenExist();
 
-  const accessToken = cookieStore.get("accessToken")?.value || null;
-  const refreshToken = cookieStore.get("refreshToken")?.value || null;
-
-  if (!accessToken && !refreshToken) {
+  if (!accessToken) {
     // throw new Error("User Not Logged In!");
 
     return {

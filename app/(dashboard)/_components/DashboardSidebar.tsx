@@ -5,47 +5,43 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarHeader,
+  // SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-// import { ISidebarItem, NavbarProps } from "@/lib/types";
-import { Newspaper, Podcast } from "lucide-react";
+import { ISidebarItem, NavbarProps } from "@/lib/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import { sidebarMenuItems } from "../_config/sidebarMenuItems";
+import { sidebarMenuItems } from "../_config/sidebarMenuItems";
 
-const navItems = [
-  {
-    label: "My Posts",
-    href: "/dashboard/my-posts",
-    icon: Podcast,
-  },
-  {
-    label: "My Profile",
-    href: "/dashboard/my-profile",
-    icon: Podcast,
-  },
-];
+// const navItems = [
+//   {
+//     label: "My Posts",
+//     href: "/dashboard/my-posts",
+//     icon: Podcast,
+//   },
+//   {
+//     label: "My Profile",
+//     href: "/dashboard/my-profile",
+//     icon: Podcast,
+//   },
+// ];
 
-export default function DashboardSidebar(
-    // {user} : 
-    // NavbarProps
-) {
+export default function DashboardSidebar({ user }: NavbarProps) {
   const pathname = usePathname();
 
   // const navItems = sidebarMenuItems.USER;
 
-//   let navItems : ISidebarItem[]  = [];
+  let navItems: ISidebarItem[] = [];
 
-//   if(user.data.profile.role === "USER"){
-//     navItems=sidebarMenuItems.USER
-//   }else if (user.data.profile.role === "AUTHOR") {
-//      navItems = sidebarMenuItems.AUTHOR;
-//   }else if (user.data.profile.role === "ADMIN") {
-//      navItems = sidebarMenuItems.ADMIN;
-//   }
+  if (user.data.profile.role === "USER") {
+    navItems = sidebarMenuItems.USER;
+  } else if (user.data.profile.role === "AUTHOR") {
+    navItems = sidebarMenuItems.AUTHOR;
+  } else if (user.data.profile.role === "ADMIN") {
+    navItems = sidebarMenuItems.ADMIN;
+  }
 
   return (
     <Sidebar
@@ -72,10 +68,7 @@ export default function DashboardSidebar(
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                  >
+                  <SidebarMenuButton asChild isActive={pathname === item.href}>
                     <Link href={item.href}>
                       <item.icon />
                       <span>{item.label}</span>

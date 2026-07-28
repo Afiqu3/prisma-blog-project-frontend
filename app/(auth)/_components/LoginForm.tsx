@@ -6,12 +6,17 @@ import { Label } from "@/components/ui/label";
 import { loginAction } from "../_actions/loginActions";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/custom-ui/password-input";
 
 const LoginForm = () => {
-  const [state, action, pending] = useActionState(loginAction, false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") ?? "";
+  const [state, action, pending] = useActionState(
+    loginAction.bind(null, redirectTo),
+    false,
+  );
 
   useEffect(() => {
     if (!state) return;
@@ -25,7 +30,7 @@ const LoginForm = () => {
     if (!state.success) {
       toast.error(state.message || "Login failed");
     }
-  }, [state, router]);
+  }, [state]);
 
   return (
     <form action={action}>

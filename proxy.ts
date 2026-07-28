@@ -79,7 +79,11 @@ export async function proxy(request: NextRequest) {
   );
 
   if (!accessToken && !isPublicRoute && !isAuthRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+
+    loginUrl.searchParams.set("redirectTo", pathname);
+
+    return NextResponse.redirect(new URL(loginUrl));
   }
 
   if (pathname.startsWith("/dashboard") && userRole !== "USER") {

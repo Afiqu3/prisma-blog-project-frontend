@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { isAccessTokenExist } from "@/service/refreshToken";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -27,9 +28,7 @@ export const createPost = async (prevState: PostState, formData: FormData) => {
     isPremium: formData.get("isPremium") === "on",
   };
 
-  const cookieStore = await cookies();
-
-  const accessToken = cookieStore.get("accessToken")?.value || null;
+  const accessToken = await isAccessTokenExist();
 
   if (!accessToken) {
     // throw new Error("User Not Logged In!");
@@ -94,10 +93,43 @@ export const UpdatePost = async (
     tags: (formData.get("tags") as string).split(", ") ?? "",
     isPremium: formData.get("isPremium") === "on",
   };
+  // const cookieStore = await cookies();
 
-  const cookieStore = await cookies();
+  // let accessToken = cookieStore.get("accessToken")?.value || null;
+  // const refreshToken = cookieStore.get("refreshToken")?.value || null;
 
-  const accessToken = cookieStore.get("accessToken")?.value || null;
+  // if (!accessToken && !refreshToken) {
+  //     // throw new Error("User Not Logged In!");
+
+  //     return {
+  //         success: false,
+  //         message: "User not logged in!"
+  //     }
+  // }
+
+  // const decodedAccessToken = accessToken ? jwtUtils.verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string) : null;
+
+  // const decodedRefreshToken = refreshToken ? jwtUtils.verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET as string) : null;
+
+  // if (!decodedAccessToken?.success && decodedRefreshToken?.success) {
+  //   //access token has expired but refresh token is valid, get new access token from backend
+  //   const result = await getNewAccessToken();
+
+  //   if (result.success) {
+  //     const newAccessToken = result.data.accessToken;
+
+  //     cookieStore.set("accessToken", newAccessToken, {
+  //       httpOnly: true,
+  //       maxAge: 60 * 60 * 24,
+  //       sameSite: "lax",
+  //     });
+
+  //     accessToken = newAccessToken;
+  //   }
+  // }
+
+
+  const accessToken = await isAccessTokenExist();
 
   if (!accessToken) {
     // throw new Error("User Not Logged In!");
@@ -108,18 +140,21 @@ export const UpdatePost = async (
     };
   }
 
-  const res = await fetch(`${process.env.BACKEND_API_URL}/api/posts/${postId}`, {
-    method: "PATCH",
-    headers: {
-      // Authorization : accessToken as unknown as string,
-      // Authorization : `${accessToken}`,
-      // Authorization : `Bearer ${accessToken}`
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/posts/${postId}`,
+    {
+      method: "PATCH",
+      headers: {
+        // Authorization : accessToken as unknown as string,
+        // Authorization : `${accessToken}`,
+        // Authorization : `Bearer ${accessToken}`
 
-      Cookie: `accessToken=${accessToken}`,
-      "Content-Type": "application/json",
+        Cookie: `accessToken=${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     },
-    body: JSON.stringify(payload),
-  });
+  );
 
   const result = await res.json();
 
@@ -143,9 +178,7 @@ export const UpdatePost = async (
 };
 
 export const getMyPosts = async () => {
-  const cookieStore = await cookies();
-
-  const accessToken = cookieStore.get("accessToken")?.value || null;
+  const accessToken = await isAccessTokenExist();
 
   if (!accessToken) {
     // throw new Error("User Not Logged In!");
