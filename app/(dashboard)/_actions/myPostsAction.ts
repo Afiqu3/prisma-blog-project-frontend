@@ -3,7 +3,6 @@
 
 import { isAccessTokenExist } from "@/service/refreshToken";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 type PostState = {
   success: true;

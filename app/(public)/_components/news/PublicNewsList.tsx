@@ -3,6 +3,7 @@
 import { IPost } from "@/lib/types";
 import { NewsCard } from "./NewsCard";
 import { getPublicNews } from "../../_actions/getPublicNews";
+import { NewsPagination } from "./NewsPagination";
 
 export async function PublicNewsList({
   searchParams,
@@ -25,6 +26,8 @@ export async function PublicNewsList({
           <NewsCard key={post.id} post={post} />
         ))}
       </div>
+
+      {/* <NewsPagination postMeta={result.meta} /> */}
     </div>
   );
 }

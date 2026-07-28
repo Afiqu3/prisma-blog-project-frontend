@@ -43,6 +43,13 @@ export type IPost = {
   updatedAt: string;
 };
 
+export type IPostMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
 export type LoginState = {
   success: boolean;
   statusCode: number;
